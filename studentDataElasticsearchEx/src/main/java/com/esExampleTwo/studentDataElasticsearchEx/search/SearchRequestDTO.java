@@ -6,7 +6,7 @@ public class SearchRequestDTO {
 
     private List<String> fields;
     private String searchTerm;
-    private List<String> fieldLocation;
+    private String fieldLocation;
     private String searchLocation;
     private Integer searchLocationFrom;
     private Integer searchLocationSize;
@@ -35,11 +35,11 @@ public class SearchRequestDTO {
         this.searchLocation = searchLocation;
     }
 
-    public List<String> getFieldLocation() {
+    public String getFieldLocation() {
         return fieldLocation;
     }
 
-    public void setFieldLocation(List<String> fieldLocation) {
+    public void setFieldLocation(String fieldLocation) {
         this.fieldLocation = fieldLocation;
     }
 

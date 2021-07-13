@@ -22,11 +22,11 @@ public class HelloInternController {
         this.helloInternService = helloInternService;
     }
 
-    @GetMapping("/location")
+    @PostMapping("/location")
     public List<HelloInterns> getByLocation(@RequestBody final SearchRequestDTO dto) {
-        List<String> list = new ArrayList<String>();
-        list.add("location");
-        dto.setFieldLocation(list);
+//        List<String> list = new ArrayList<String>();
+//        list.add("location");
+        dto.setFieldLocation("location");
         return helloInternService.getByLocation(dto);
     }
 

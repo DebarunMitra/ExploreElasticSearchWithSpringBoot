@@ -2,6 +2,7 @@ package com.esExampleTwo.studentDataElasticsearchEx.search.util;
 
 import com.esExampleTwo.studentDataElasticsearchEx.search.SearchRequestDTO;
 import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -46,6 +47,7 @@ public class SearchUtil {
                     .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
                     .operator(Operator.AND);
 
+
             fields.forEach(queryBuilder::field);
 
             return queryBuilder;
@@ -80,17 +82,27 @@ public class SearchUtil {
             return null;
         }
 
-        final List<String> fieldLocation = dto.getFieldLocation();
-        if (fieldLocation.isEmpty()) {
+        try{
+            final String fieldLocation = dto.getFieldLocation();
+            if (fieldLocation.isEmpty()) {
+                return null;
+            }
+
+            final QueryBuilder queryBuilder = QueryBuilders.matchQuery(fieldLocation, dto.getSearchLocation())
+                    .operator(Operator.AND).fuzziness(Fuzziness.TWO);
+
+//            final QueryBuilder queryBuilder = QueryBuilders.matchQuery(QueryBuilders.fuzzyQuery(fieldLocation, dto.getSearchLocation()));
+//                    .operator(Operator.AND);
+
+            if(queryBuilder == null){
+                return null;
+            }
+
+            return queryBuilder;
+
+        }catch (final Exception e) {
+            e.printStackTrace();
             return null;
         }
-
-        return fieldLocation.stream()
-                .findFirst()
-                .map(field ->
-                        QueryBuilders.matchQuery(field, dto.getSearchLocation())
-                                .operator(Operator.AND))
-                .orElse(null);
-
     }
 }
